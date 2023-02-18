@@ -1,2 +1,2 @@
 from contract.contract_static import contract_static
-from contract.contract_utils import contract_utils
+from contract.contract_helper import contract_helper
