@@ -38,8 +38,10 @@ def send():
     sender_address = req['sender_address']
     receiver_address = req['receiver_address']
     amount = req['amount']
+    if int(amount) > contract_utils.get_balance(sender_address)['ether']:
+        return jsonify({'error': 'true', 'message': 'Not enough balance'})
     result = contract_static(sender_private_key, sender_address, receiver_address, amount).send()
-    return result
+    return jsonify({'error': 'false', 'message': 'Transaction Complete'})
 
 
 @app.route('/get_all_transactions', methods=['GET'])

@@ -14,7 +14,6 @@ function posting_data() {
             text: 'Sending to: ' + reciever_address + '\n' +
                 'Amount: ' + amount
         }).then((result) => {
-
             if (result.isConfirmed) {
                 Swal.fire({
                     title: 'Loading',
@@ -33,19 +32,26 @@ function posting_data() {
                                 "receiver_address": reciever_address,
                                 "amount": amount
                             })
-                        }).then(response => {
-                            if (!response.ok) {
-                                throw new Error(response.statusText)
-                            } else {
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data['error'] === 'false') {
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Your request has completed',
+                                    html: data['message'],
                                     willClose:  () => {
                                         location.reload(); // refresh the page
                                     }
                                 })
-                            }
-                        })
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: data['message']
+                                })
+                            }}
+                        )
                     }
                 })
 
